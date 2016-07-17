@@ -34,10 +34,10 @@ test:
     - aws cloudformation create-stack --stack-name ${AWS_CF_STACK_NAME}-2 --template-body file://ami-ci.cform --parameters ParameterKey=KeyName,ParameterValue=$AWS_KEY_NAME ParameterKey=ImageId,ParameterValue=`cat /tmp/imageid.txt` ParameterKey=InstanceType,ParameterValue=$AWS_INSTANCE_TYPE
     - aws cloudformation wait stack-create-complete --stack-name ${AWS_CF_STACK_NAME}-2
     - aws cloudformation describe-stacks --stack-name ${AWS_CF_STACK_NAME}-2 | jq -r '.Stacks[].Outputs[] | select(.OutputKey == "PublicIP") | .OutputValue' > /tmp/publicip.txt
-    - echo "`cat /tmp/publicip.txt` testserver2" >> /tmp/hosts2.txt
+    - echo "`cat /tmp/publicip.txt` amitestserver" >> /tmp/hosts2.txt
     - cp /etc/hosts .
     - sudo bash -c "cat hosts /tmp/hosts2.txt | tee /etc/hosts"
-    - bundle exec rake spec:testserver
+    - bundle exec rake spec:amitestserver
   post:
     - aws cloudformation delete-stack --stack-name $AWS_CF_STACK_NAME
     - aws cloudformation delete-stack --stack-name ${AWS_CF_STACK_NAME}-2
