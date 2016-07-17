@@ -31,6 +31,7 @@ test:
     
   override:
     - aws ec2 create-image --name $AMI_NAME-`git log -n 1 --format=%H` --instance-id `cat /tmp/instanceid.txt` | jq -r '.ImageId' > /tmp/imageid.txt
+    - sleep 300
     - aws cloudformation create-stack --stack-name ${AWS_CF_STACK_NAME}-2 --template-body file://ami-ci.cform --parameters ParameterKey=KeyName,ParameterValue=$AWS_KEY_NAME ParameterKey=ImageId,ParameterValue=`cat /tmp/imageid.txt` ParameterKey=InstanceType,ParameterValue=$AWS_INSTANCE_TYPE
     - aws cloudformation wait stack-create-complete --stack-name ${AWS_CF_STACK_NAME}-2
     - aws cloudformation describe-stacks --stack-name ${AWS_CF_STACK_NAME}-2 | jq -r '.Stacks[].Outputs[] | select(.OutputKey == "PublicIP") | .OutputValue' > /tmp/publicip.txt
