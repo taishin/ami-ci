@@ -39,6 +39,6 @@ test:
     - cp /etc/hosts .
     - sudo bash -c "cat hosts /tmp/hosts2.txt | tee /etc/hosts"
     - bundle exec rake spec:amitestserver
-  post:
-    - aws cloudformation delete-stack --stack-name $AWS_CF_STACK_NAME
-    - aws cloudformation delete-stack --stack-name ${AWS_CF_STACK_NAME}-2
+  # post:
+    # - aws cloudformation delete-stack --stack-name $AWS_CF_STACK_NAME
+    # - aws cloudformation delete-stack --stack-name ${AWS_CF_STACK_NAME}-2
