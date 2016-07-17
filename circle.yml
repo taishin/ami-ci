@@ -44,3 +44,4 @@ test:
   post:
     - aws cloudformation delete-stack --stack-name $AWS_CF_STACK_NAME
     - aws cloudformation delete-stack --stack-name ${AWS_CF_STACK_NAME}-2
+    - aws ec2 create-tags --resources `cat /tmp/imageid.txt` --tags Key=commitId,Value=`git log -n 1 --format=%H` Key=Name,Value=ami-ci-`git log -n 1 --format=%H` Key=Name,Value=$AMI_NAME
